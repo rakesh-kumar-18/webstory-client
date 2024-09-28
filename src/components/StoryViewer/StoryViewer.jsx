@@ -210,8 +210,8 @@ const StoryViewer = (props) => {
   };
 
   const handleShare = () => {
-    const link = `${conf.frontendUrl}/?viewstory=true&id=${storyId}`;
-    navigator.clipboard.writeText(link);
+    const currentUrl = window.location.href;
+    navigator.clipboard.writeText(currentUrl);
     setLinkCopiedStatus(true);
 
     setTimeout(() => {
@@ -279,9 +279,8 @@ const StoryViewer = (props) => {
               return (
                 <div
                   key={index}
-                  className={`${styles.progressBar} ${
-                    isCompleted ? styles.progressBarCompleted : ""
-                  } ${isActive ? styles.progressBarActive : ""}`}
+                  className={`${styles.progressBar} ${isCompleted ? styles.progressBarCompleted : ""
+                    } ${isActive ? styles.progressBarActive : ""}`}
                 ></div>
               );
             })}
