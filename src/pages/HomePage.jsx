@@ -38,10 +38,7 @@ const HomePage = () => {
 
   const fetchCategoryStories = async (category) => {
     try {
-      console.log(`${conf.backendUrl}/api/post/${category}`);
       const response = await fetch(`${conf.backendUrl}/api/post/${category}`);
-      const x = await response.json();
-      console.log(x);
       if (response.ok) {
         const data = await response.json();
         setCategoryStories((prevState) => ({
