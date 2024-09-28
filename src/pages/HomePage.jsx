@@ -38,7 +38,10 @@ const HomePage = () => {
 
   const fetchCategoryStories = async (category) => {
     try {
+      console.log(`${conf.backendUrl}/api/post/${category}`);
       const response = await fetch(`${conf.backendUrl}/api/post/${category}`);
+      const x = await response.json();
+      console.log(x);
       if (response.ok) {
         const data = await response.json();
         setCategoryStories((prevState) => ({
@@ -138,26 +141,26 @@ const HomePage = () => {
 
           {selectedFilters.includes("All")
             ? filters
-                .filter((filter) => filter.name !== "All")
-                .map((filter) => (
-                  <CategorySection
-                    key={filter.name}
-                    category={filter.name}
-                    handleStoryViewer={handleStoryViewer}
-                    onStoryChange={fetchCategoryStories}
-                    categoryStories={categoryStories[filter.name] || []}
-                  />
-                ))
-            : selectedFilters.map((filter) => (
+              .filter((filter) => filter.name !== "All")
+              .map((filter) => (
                 <CategorySection
-                  key={filter}
-                  category={filter}
-                  authValidated={authValidated}
+                  key={filter.name}
+                  category={filter.name}
                   handleStoryViewer={handleStoryViewer}
                   onStoryChange={fetchCategoryStories}
-                  categoryStories={categoryStories[filter] || []}
+                  categoryStories={categoryStories[filter.name] || []}
                 />
-              ))}
+              ))
+            : selectedFilters.map((filter) => (
+              <CategorySection
+                key={filter}
+                category={filter}
+                authValidated={authValidated}
+                handleStoryViewer={handleStoryViewer}
+                onStoryChange={fetchCategoryStories}
+                categoryStories={categoryStories[filter] || []}
+              />
+            ))}
         </>
       );
     }
