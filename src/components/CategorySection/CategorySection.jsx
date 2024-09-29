@@ -28,7 +28,10 @@ const CategorySection = (props) => {
   const noStoriesAvailable = props.categoryStories.length === 0;
 
   return (
-    <div className={styles.categoryContainer}>
+    <div
+      className={styles.categoryContainer}
+      style={{ marginBottom: noStoriesAvailable && "0px" }}
+    >
       {!isMobile && (
         <div className={styles.categoryHeader}>
           Top Stories About {props.category}
