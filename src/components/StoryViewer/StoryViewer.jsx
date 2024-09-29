@@ -295,7 +295,11 @@ const StoryViewer = (props) => {
             className={styles.categoryStory}
             onClick={(event) => handleContainerClick(event)}
             style={{
-              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0 ), rgba(0, 0, 0,  0.8)), linear-gradient(rgba(0, 0, 0, 0.2 ), rgba(0, 0, 0, 0)) , url(${slides?.[currentSlideIndex]?.imageUrl})`,
+              backgroundImage: `
+                linear-gradient(to top, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 50%),
+                linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 20%, rgba(0, 0, 0, 0) 50%),
+                url(${slides?.[currentSlideIndex]?.imageUrl})
+              `,
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}

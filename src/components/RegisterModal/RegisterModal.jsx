@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { IoEye, IoEyeOff } from "react-icons/io5";
 import ModalContainer from "../ModalContainer/ModalContainer";
 import styles from "./registerModal.module.css";
-import passwordIcon from "../../assets/passwordIcon.png";
 import conf from "../../conf/conf";
 
 const RegisterModal = () => {
@@ -12,7 +12,6 @@ const RegisterModal = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [showLogin, setShowLogin] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const navigate = useNavigate();
 
@@ -35,7 +34,6 @@ const RegisterModal = () => {
         throw new Error(errorData.message);
       }
 
-      setShowLogin(true);
       navigate("/?signin=true");
 
       toast.success("Registration successful! Please sign-in to continue");
@@ -56,9 +54,7 @@ const RegisterModal = () => {
           <div>
             <label> Username</label>
             <input
-              onChange={(e) => {
-                setUsername(e.target.value);
-              }}
+              onChange={(e) => setUsername(e.target.value)}
               type="text"
               placeholder="Enter username"
               disabled={isProcessing}
@@ -67,20 +63,18 @@ const RegisterModal = () => {
           <div className={styles.passwordContainer}>
             <label>Password</label>
             <input
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
+              onChange={(e) => setPassword(e.target.value)}
               type={showPassword ? "text" : "password"}
               placeholder="Enter password"
               className={styles.passwordInput}
               disabled={isProcessing}
             />
-            <img
+            <span
               onClick={() => setShowPassword(!showPassword)}
               className={styles.passwordIcon}
-              src={passwordIcon}
-              alt="password icon"
-            />
+            >
+              {showPassword ? <IoEyeOff /> : <IoEye />}
+            </span>
           </div>
           {showError && <div className={styles.error}>{errorMessage}</div>}
           <div>

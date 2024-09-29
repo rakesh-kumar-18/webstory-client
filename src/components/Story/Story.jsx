@@ -18,7 +18,11 @@ const Story = (props) => {
         }}
         className={styles.categoryStory}
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0 ), rgba(0, 0, 0,  0.9)), url(${props.story.slides[0].imageUrl})`,
+          backgroundImage: `
+            linear-gradient(to top, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 50%),
+            linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 20%, rgba(0, 0, 0, 0) 50%),
+            url(${props.story.slides[0].imageUrl})
+          `,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -31,7 +35,6 @@ const Story = (props) => {
         </div>
       </div>
 
-      {/* show edit btn only for the posts created by the user */}
       {props.story.postedBy === localStorage.getItem("userId") && (
         <button className={styles.editBtn}>
           <Link
@@ -43,7 +46,6 @@ const Story = (props) => {
           >
             <div className={styles.editBtnContainer}>
               <img src={editIcon} alt="edit-icon" />
-
               <p> Edit</p>
             </div>
           </Link>

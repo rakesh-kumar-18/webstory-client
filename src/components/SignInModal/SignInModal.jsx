@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ModalContainer from "../ModalContainer/ModalContainer";
 import styles from "./signInModal.module.css";
-import passwordIcon from "../../assets/passwordIcon.png";
+import { IoEye, IoEyeOff } from "react-icons/io5";
 import conf from "../../conf/conf";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -70,12 +70,12 @@ const SignInModal = () => {
               className={styles.passwordInput}
               disabled={isProcessing}
             />
-            <img
+            <span
               onClick={() => setShowPassword(!showPassword)}
               className={styles.passwordIcon}
-              src={passwordIcon}
-              alt="password icon"
-            />
+            >
+              {showPassword ? <IoEyeOff /> : <IoEye />}
+            </span>
           </div>
           {error && <div className={styles.error}>{error}</div>}
           <div>
