@@ -279,8 +279,9 @@ const StoryViewer = (props) => {
               return (
                 <div
                   key={index}
-                  className={`${styles.progressBar} ${isCompleted ? styles.progressBarCompleted : ""
-                    } ${isActive ? styles.progressBarActive : ""}`}
+                  className={`${styles.progressBar} ${
+                    isCompleted ? styles.progressBarCompleted : ""
+                  } ${isActive ? styles.progressBarActive : ""}`}
                 ></div>
               );
             })}
