@@ -155,6 +155,12 @@ const StoryViewer = (props) => {
   };
 
   const handleDownload = async (slideIndex) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/?signin=true");
+      return;
+    }
+
     const slide = slides[slideIndex];
     const url = slide.imageUrl;
 
