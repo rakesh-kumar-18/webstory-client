@@ -25,41 +25,49 @@ const CategorySection = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.category]);
 
-  if (props.categoryStories.length === 0) {
-    return null;
-  }
+  const noStoriesAvailable = props.categoryStories.length === 0;
 
   return (
     <div className={styles.categoryContainer}>
       {!isMobile && (
         <div className={styles.categoryHeader}>
-          Top stories about {props.category}
+          Top Stories About {props.category}
         </div>
       )}
       <div className={styles.categoryStories}>
-        {props.categoryStories.slice(0, maxStoriesInRow).map((story, index) => (
-          <Story
-            key={index}
-            story={story}
-            authValidated={props.authValidated}
-            handleStoryViewer={props.handleStoryViewer}
-          />
-        ))}
+        {noStoriesAvailable ? (
+          <div className={styles.noStoriesContainer}>
+            <p className={styles.noStoriesMessage}>No stories available</p>
+          </div>
+        ) : (
+          props.categoryStories
+            .slice(0, maxStoriesInRow)
+            .map((story, index) => (
+              <Story
+                key={index}
+                story={story}
+                authValidated={props.authValidated}
+                handleStoryViewer={props.handleStoryViewer}
+              />
+            ))
+        )}
       </div>
-      {!isMobile && maxStoriesInRow < props.categoryStories.length && (
-        <button
-          onClick={() =>
-            setMaxStoriesInRow(
-              maxStoriesInRow + 4 > props.categoryStories.length
-                ? props.categoryStories.length
-                : maxStoriesInRow + 4,
-            )
-          }
-          className={styles.seemoreBtn}
-        >
-          See more
-        </button>
-      )}
+      {!isMobile &&
+        !noStoriesAvailable &&
+        maxStoriesInRow < props.categoryStories.length && (
+          <button
+            onClick={() =>
+              setMaxStoriesInRow(
+                maxStoriesInRow + 4 > props.categoryStories.length
+                  ? props.categoryStories.length
+                  : maxStoriesInRow + 4,
+              )
+            }
+            className={styles.seemoreBtn}
+          >
+            See more
+          </button>
+        )}
     </div>
   );
 };

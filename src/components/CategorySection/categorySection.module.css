@@ -28,16 +28,20 @@
   background-color: var(--primary-onhover);
 }
 
-.noStories {
-  height: 42rem;
-  width: 100%;
-  background-color: azure;
+.noStoriesContainer {
+  width: calc(100vw - 60px);
   color: black;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 30px 20px;
+}
+
+.noStoriesMessage {
+  font-size: 1.5rem;
+  color: #8e8e8e;
+  font-weight: 400;
 }
 
 @media (min-width: 577px) and (max-width: 992px) {
@@ -49,12 +53,19 @@
 @media (max-width: 576px) {
   .categoryContainer {
     margin-top: 0;
+    margin-bottom: 1rem;
   }
+
   .categoryStories {
     grid-template-columns: repeat(1, 1fr);
     padding: 0 20px;
   }
+
   .categoryHeader {
     margin: 25px 0;
+  }
+
+  .noStoriesContainer {
+    display: none;
   }
 }

@@ -2,13 +2,11 @@
 import { useEffect, useState } from "react";
 import styles from "./bookmarks.module.css";
 import Story from "../Story/Story";
-import conf from "../../conf/conf";
 
 const Bookmarks = (props) => {
-  const [bookmarks, setBookmarks] = useState([]);
+  const { bookmarks, isLoading, handleStoryViewer } = props;
   const [maxStoriesInRow, setMaxStoriesInRow] = useState(4);
   const [isMobile, setIsMobile] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const handleResize = () => {
@@ -23,98 +21,65 @@ const Bookmarks = (props) => {
     };
   }, []);
 
-  const fetchBookmarks = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch(`${conf.backendUrl}/api/user/bookmarks`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${localStorage.getItem("token")}`,
-        },
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setBookmarks(data.bookmarks);
-      } else {
-        console.error("Failed to fetch your stories");
-      }
-    } catch (error) {
-      console.error("Error fetching your stories:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchBookmarks();
-  }, []);
-
   if (isLoading) {
     return (
-      <>
-        <div className={styles.categoryContainer}>
-          <div
-            style={{
-              textAlign: "center",
-            }}
-            className={styles.categoryHeader}
-          >
-            Loading...
-          </div>
+      <div className={styles.categoryContainer}>
+        <div
+          style={{
+            textAlign: "center",
+          }}
+          className={styles.categoryHeader}
+        >
+          Loading...
         </div>
-      </>
+      </div>
     );
   }
 
   if (bookmarks.length === 0) {
     return (
-      <>
-        <div className={styles.categoryContainer}>
-          <div
-            style={{
-              textAlign: "center",
-            }}
-            className={styles.categoryHeader}
-          >
-            You have no bookmarks.
-          </div>
+      <div className={styles.categoryContainer}>
+        <div
+          style={{
+            textAlign: "center",
+          }}
+          className={styles.categoryHeader}
+        >
+          You have no bookmarks.
         </div>
-      </>
+      </div>
     );
   }
 
   return (
-    <>
-      <div className={styles.categoryContainer}>
-        {<div className={styles.categoryHeader}>Your Bookmarks</div>}
-        <div className={styles.categoryStories}>
-          {bookmarks.slice(0, maxStoriesInRow).map((story, index) => (
-            <Story
-              key={index}
-              story={story}
-              authValidated={props.authValidated}
-              handleStoryViewer={props.handleStoryViewer}
-              isBookmark={true}
-            />
-          ))}
-        </div>
-        {!isMobile && maxStoriesInRow < bookmarks.length && (
-          <button
-            onClick={() =>
-              setMaxStoriesInRow(
-                maxStoriesInRow + 4 > bookmarks.length
-                  ? bookmarks.length
-                  : maxStoriesInRow + 4,
-              )
-            }
-            className={styles.seemoreBtn}
-          >
-            See more
-          </button>
-        )}
+    <div className={styles.categoryContainer}>
+      <div className={styles.categoryHeader}>Your Bookmarks</div>
+      <div className={styles.categoryStories}>
+        {bookmarks.slice(0, maxStoriesInRow).map((story, index) => (
+          <Story
+            key={index}
+            story={story}
+            authValidated={props.authValidated}
+            handleStoryViewer={handleStoryViewer}
+            isBookmark={true}
+          />
+        ))}
       </div>
-    </>
+      {!isMobile && maxStoriesInRow < bookmarks.length && (
+        <button
+          onClick={() =>
+            setMaxStoriesInRow(
+              maxStoriesInRow + 4 > bookmarks.length
+                ? bookmarks.length
+                : maxStoriesInRow + 4,
+            )
+          }
+          className={styles.seemoreBtn}
+        >
+          See more
+        </button>
+      )}
+    </div>
   );
 };
 

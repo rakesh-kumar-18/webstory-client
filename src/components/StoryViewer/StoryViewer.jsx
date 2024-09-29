@@ -24,6 +24,7 @@ const StoryViewer = (props) => {
   const [likeCount, setLikeCount] = useState([]);
   const [likeStatus, setLikeStatus] = useState([]);
   const location = useLocation();
+  const { fetchBookmarks } = props;
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -140,6 +141,10 @@ const StoryViewer = (props) => {
         const newBookmarkStatus = [...bookmarkStatus];
         newBookmarkStatus[slideIndex] = !bookmarkStatus[slideIndex];
         setBookmarkStatus(newBookmarkStatus);
+
+        if (fetchBookmarks) {
+          fetchBookmarks();
+        }
       } else {
         navigate("/?signin=true");
         console.error("Bookmark action failed");

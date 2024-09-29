@@ -35,6 +35,31 @@ const HomePage = () => {
   const [selectedFilters, setSelectedFilters] = useState(["All"]);
   const [isBookmark, setIsBookmark] = useState(false);
   const [categoryStories, setCategoryStories] = useState({});
+  const [bookmarks, setBookmarks] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchBookmarks = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${conf.backendUrl}/api/user/bookmarks`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${localStorage.getItem("token")}`,
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setBookmarks(data.bookmarks);
+      } else {
+        console.error("Failed to fetch bookmarks");
+      }
+    } catch (error) {
+      console.error("Error fetching bookmarks:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const fetchCategoryStories = async (category) => {
     try {
@@ -81,6 +106,7 @@ const HomePage = () => {
     };
 
     validateToken();
+    fetchBookmarks();
 
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -110,7 +136,13 @@ const HomePage = () => {
 
   const renderCategorySections = () => {
     if (displayParamMappings.viewbookmarks) {
-      return <Bookmarks handleStoryViewer={handleStoryViewer} />;
+      return (
+        <Bookmarks
+          bookmarks={bookmarks}
+          isLoading={isLoading}
+          handleStoryViewer={handleStoryViewer}
+        />
+      );
     } else if (displayParamMappings.yourstories) {
       return (
         <YourStories
@@ -184,7 +216,11 @@ const HomePage = () => {
           <AddStory onStoryChange={fetchCategoryStories} />
         ))}
       {displayParamMappings.viewstory && (
-        <StoryViewer isBookmark={isBookmark} isMobile={isMobile} />
+        <StoryViewer
+          isBookmark={isBookmark}
+          isMobile={isMobile}
+          fetchBookmarks={fetchBookmarks}
+        />
       )}
 
       {displayParamMappings.slide && <Slide />}
